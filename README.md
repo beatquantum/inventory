@@ -56,6 +56,9 @@ If you have already cloned the repository, skip to step 5.
 9. Upload the `inventory.txt` file to the AI platform.
 
 10. Paste the prompt you saved earlier into the AI interface.
+11. AI will create a bash script to gather additional information bespoke to your system. Save it on the linux server as "gather.sh"
+12. Run "bash gather.sh" - this will generate a file "additional_info.txt".
+13. Upload this file to the AI prompt and analysis will continue.
 
 ## Expected Output
 
