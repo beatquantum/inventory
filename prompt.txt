@@ -1,0 +1,43 @@
+**Prompt for Cryptographic Inventory Analysis**
+
+As a cryptography expert, your task is to analyze the cryptographic inventory of various servers and produce a report with two parts: (1) a checklist for verification and hardening of traditional cryptography, and (2) a checklist for using hybrid or post-quantum cryptography, based on the provided `inventory.txt` file. The `inventory.txt` file contains significant cryptographic details, but may lack specific information needed for a comprehensive analysis. You must create a two-step workflow: first, generate a bash script to collect only the additional information not readily available or obvious from `inventory.txt`, and second, produce the report after receiving the supplementary data. Follow these guidelines:
+
+- **Step 1: Generate a Bash Script**
+  - Thoroughly analyze the provided `inventory.txt` to identify specific gaps in information critical for the report. Examples of potential gaps include (but are not limited to):
+    - Missing DNSSEC validation results for the server’s domain.
+    - Unverified certificate trust chains or expiration details.
+    - Incomplete service configurations (e.g., full web server settings, cipher preferences).
+    - Unclear disk encryption status or device mapper mappings.
+    - Insufficient details on entropy or random number generation (RNG) hardware.
+    - Lack of information on post-quantum algorithm support in libraries like OpenSSL.
+  - Based on the identified gaps, create a bash script (wrapped in an `<xaiArtifact>` tag with a unique `artifact_id`, titled `gather_info.sh`, and content type `text/bash`) that the user can run on their server via CLI to collect only this missing information. The script must:
+    - Save output to `additional_info.txt`.
+    - Include only commands necessary to address the specific gaps found in `inventory.txt`, avoiding duplication of existing data (e.g., OpenSSL version, SSH ciphers, firewall rules).
+    - Be dynamically generated, with commands tailored to the server’s configuration as revealed by `inventory.txt`.
+    - Use dynamic variables (e.g., `$(hostname)` for domain-specific commands) for portability.
+    - Check for the presence of tools or files before execution, handling cases where they are absent.
+    - Minimize user input, clearly indicate `sudo` requirements, and ensure robustness across different server setups.
+  - Provide clear instructions for running the script and sharing the output.
+
+- **Step 2: Produce the Report**
+  - Once the user provides `additional_info.txt`, combine it with `inventory.txt` to generate the report.
+  - The report must include:
+    - **Part 1: Checklist for Verification and Hardening of Traditional Cryptography**
+      - Verify cryptographic algorithms, key sizes, and protocols across components (e.g., SSH, TLS, web servers, databases).
+      - Identify weak configurations (e.g., outdated ciphers, insecure protocol versions).
+      - Recommend hardening steps (e.g., disable weak ciphers, enforce TLS 1.3, secure SSH, enable disk encryption).
+    - **Part 2: Checklist for Using Hybrid or Post-Quantum Cryptography**
+      - Assess current use of hybrid/post-quantum algorithms (e.g., in SSH or TLS).
+      - Evaluate readiness of libraries (e.g., OpenSSL, GnuTLS) and kernel for post-quantum cryptography.
+      - Recommend steps to adopt quantum-resistant algorithms (e.g., hybrid key exchanges, monitoring NIST standards).
+  - Ensure recommendations are actionable and tailored to the server’s configuration.
+
+- **Prompt Output**
+  - Provide a clear workflow description with Step 1 and Step 2.
+  - In Step 1, include the bash script in an `<xaiArtifact>` tag, with commands dynamically determined based on the analysis of `inventory.txt`, not hardcoded or predefined.
+  - In Step 2, describe the report structure without generating it (await user’s submission of `additional_info.txt`).
+  - Ensure the prompt is generic, reusable across servers, and relies on `inventory.txt` as the primary data source, with the bash script targeting only missing or ambiguous details.
+
+Please use the attached "inventory.txt" as the starting point of your analysis.
+
+Please generate and follow the two-step workflow, including a bash script with commands dynamically tailored to collect only the additional information needed beyond what `inventory.txt` provides, and outline the report structure. If clarification is needed, ask the user before proceeding.
